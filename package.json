@@ -7,7 +7,7 @@
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js"
   },
-  "engines": { "node": "18.x" },
+  "engines": { "node": "24.x" },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
