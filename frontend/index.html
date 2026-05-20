@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TemanBelajar — Cari Partner Belajar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+<!-- AUTH SCREENS -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="logo-mark">TB</div>
+      <span class="brand-name">TemanBelajar</span>
+    </div>
+    <div class="auth-hero">
+      <h1>Belajar lebih<br><em>bermakna</em><br>bersama.</h1>
+      <p>Temukan partner diskusi yang tepat berdasarkan mata kuliah, jurusan, dan jadwalmu.</p>
+    </div>
+    <div class="auth-stats">
+      <div class="stat"><span class="stat-num">500+</span><span>Mahasiswa Aktif</span></div>
+      <div class="stat"><span class="stat-num">120+</span><span>Room Diskusi</span></div>
+      <div class="stat"><span class="stat-num">30+</span><span>Mata Kuliah</span></div>
+    </div>
+    <div class="auth-deco">
+      <div class="deco-circle c1"></div>
+      <div class="deco-circle c2"></div>
+      <div class="deco-circle c3"></div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <!-- LOGIN -->
+    <div id="login-form" class="auth-form active">
+      <h2>Selamat Datang</h2>
+      <p class="form-sub">Masuk ke akun TemanBelajar kamu</p>
+      <div id="login-error" class="alert alert-error hidden"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="email@kampus.ac.id">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-pw">
+          <input type="password" id="login-password" placeholder="••••••••">
+          <button type="button" class="toggle-pw" onclick="togglePw('login-password')">👁</button>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Masuk</button>
+      <p class="form-switch">Belum punya akun? <a href="#" onclick="showForm('register')">Daftar sekarang</a></p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="register-form" class="auth-form">
+      <h2>Buat Akun</h2>
+      <p class="form-sub">Bergabung dengan ribuan mahasiswa</p>
+      <div id="register-error" class="alert alert-error hidden"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="reg-nama" placeholder="Nama kamu">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="email@kampus.ac.id">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Jurusan</label>
+          <select id="reg-jurusan">
+            <option value="">Pilih Jurusan</option>
+            <option>Teknik Informatika</option>
+            <option>Matematika</option>
+            <option>Akuntansi</option>
+            <option>Manajemen</option>
+            <option>Hukum</option>
+            <option>Kedokteran</option>
+            <option>Psikologi</option>
+            <option>Komunikasi</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Semester</label>
+          <select id="reg-semester">
+            <option value="">Semester</option>
+            <option value="1">1</option><option value="2">2</option>
+            <option value="3">3</option><option value="4">4</option>
+            <option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-pw">
+          <input type="password" id="reg-password" placeholder="Min. 6 karakter">
+          <button type="button" class="toggle-pw" onclick="togglePw('reg-password')">👁</button>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="doRegister()">Buat Akun</button>
+      <p class="form-switch">Sudah punya akun? <a href="#" onclick="showForm('login')">Masuk</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="app hidden">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-mark sm">TB</div>
+      <span>TemanBelajar</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="beranda" onclick="showPage('beranda',this)">
+        <span class="nav-icon">🏠</span><span class="nav-label">Beranda</span>
+      </a>
+      <a href="#" class="nav-item" data-page="cari" onclick="showPage('cari',this)">
+        <span class="nav-icon">🔍</span><span class="nav-label">Cari Partner</span>
+      </a>
+      <a href="#" class="nav-item" data-page="requests" onclick="showPage('requests',this)">
+        <span class="nav-icon">📨</span><span class="nav-label">Permintaan</span>
+        <span class="badge hidden" id="req-badge">0</span>
+      </a>
+      <a href="#" class="nav-item" data-page="chat" onclick="showPage('chat',this)">
+        <span class="nav-icon">💬</span><span class="nav-label">Chat & Room</span>
+      </a>
+      <a href="#" class="nav-item" data-page="jadwal" onclick="showPage('jadwal',this)">
+        <span class="nav-icon">📅</span><span class="nav-label">Jadwal Belajar</span>
+      </a>
+      <a href="#" class="nav-item" data-page="profil" onclick="showPage('profil',this)">
+        <span class="nav-icon">👤</span><span class="nav-label">Profil</span>
+      </a>
+      <a href="#" class="nav-item admin-only hidden" data-page="admin" onclick="showPage('admin',this)">
+        <span class="nav-icon">⚙️</span><span class="nav-label">Admin Panel</span>
+      </a>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar-sm" id="sidebar-avatar">?</div>
+      <div class="user-info-sm">
+        <span id="sidebar-nama">—</span>
+        <small id="sidebar-jurusan">—</small>
+      </div>
+      <button class="btn-logout" onclick="doLogout()" title="Keluar">⏻</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- BERANDA -->
+    <section id="page-beranda" class="page active">
+      <div class="page-header">
+        <h1>Halo, <span id="welcome-nama">—</span> 👋</h1>
+        <p>Temukan partner belajar hari ini</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div><div class="stat-val" id="h-partners">0</div><div class="stat-lbl">Partner Aktif</div></div></div>
+        <div class="stat-card"><div class="stat-icon">💬</div><div><div class="stat-val" id="h-rooms">0</div><div class="stat-lbl">Room Diskusi</div></div></div>
+        <div class="stat-card"><div class="stat-icon">📨</div><div><div class="stat-val" id="h-requests">0</div><div class="stat-lbl">Permintaan</div></div></div>
+        <div class="stat-card"><div class="stat-icon">📅</div><div><div class="stat-val" id="h-jadwal">0</div><div class="stat-lbl">Jadwal Minggu Ini</div></div></div>
+      </div>
+      <div class="home-sections">
+        <div class="home-card">
+          <h3>Partner Direkomendasikan</h3>
+          <div id="rekomendasi-list" class="partner-mini-list">
+            <div class="loading-text">Memuat rekomendasi...</div>
+          </div>
+          <a href="#" class="link-more" onclick="showPage('cari', document.querySelector('[data-page=cari]'))">Lihat semua →</a>
+        </div>
+        <div class="home-card">
+          <h3>Permintaan Masuk</h3>
+          <div id="request-preview" class="request-preview-list">
+            <div class="loading-text">Memuat permintaan...</div>
+          </div>
+          <a href="#" class="link-more" onclick="showPage('requests', document.querySelector('[data-page=requests]'))">Lihat semua →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARI PARTNER -->
+    <section id="page-cari" class="page">
+      <div class="page-header">
+        <h1>Cari Partner Belajar</h1>
+        <p>Filter berdasarkan mata kuliah, jurusan, atau semester</p>
+      </div>
+      <div class="filter-bar">
+        <select id="filter-matkul" class="filter-select">
+          <option value="">Semua Mata Kuliah</option>
+        </select>
+        <select id="filter-jurusan" class="filter-select">
+          <option value="">Semua Jurusan</option>
+          <option>Teknik Informatika</option>
+          <option>Matematika</option>
+          <option>Akuntansi</option>
+          <option>Manajemen</option>
+          <option>Hukum</option>
+          <option>Kedokteran</option>
+          <option>Psikologi</option>
+          <option>Komunikasi</option>
+        </select>
+        <select id="filter-semester" class="filter-select">
+          <option value="">Semua Semester</option>
+          <option value="1">Semester 1</option><option value="2">Semester 2</option>
+          <option value="3">Semester 3</option><option value="4">Semester 4</option>
+          <option value="5">Semester 5</option><option value="6">Semester 6</option>
+          <option value="7">Semester 7</option><option value="8">Semester 8</option>
+        </select>
+        <button class="btn-primary sm" onclick="cariPartner()">🔍 Cari</button>
+      </div>
+      <div id="partner-grid" class="partner-grid">
+        <div class="empty-state">Klik tombol Cari untuk menemukan partner</div>
+      </div>
+    </section>
+
+    <!-- PERMINTAAN -->
+    <section id="page-requests" class="page">
+      <div class="page-header">
+        <h1>Permintaan Partner</h1>
+      </div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('masuk',this)">📥 Masuk</button>
+        <button class="tab" onclick="switchTab('keluar',this)">📤 Keluar</button>
+      </div>
+      <div id="tab-masuk" class="tab-content active">
+        <div id="requests-masuk" class="requests-list">
+          <div class="loading-text">Memuat...</div>
+        </div>
+      </div>
+      <div id="tab-keluar" class="tab-content">
+        <div id="requests-keluar" class="requests-list">
+          <div class="loading-text">Memuat...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section id="page-chat" class="page">
+      <div class="chat-layout">
+        <div class="room-list-panel">
+          <div class="room-list-header"><h3>Room Diskusi</h3></div>
+          <div id="room-list" class="room-list">
+            <div class="loading-text">Memuat room...</div>
+          </div>
+        </div>
+        <div class="chat-panel" id="chat-panel">
+          <div class="chat-empty">
+            <div class="chat-empty-icon">💬</div>
+            <h3>Pilih Room untuk Mulai Chat</h3>
+            <p>Buka permintaan yang diterima untuk membuat room diskusi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JADWAL -->
+    <section id="page-jadwal" class="page">
+      <div class="page-header">
+        <h1>Jadwal Belajar</h1>
+        <p>Semua jadwal belajar bersama dari semua room</p>
+      </div>
+      <div id="jadwal-list" class="jadwal-list">
+        <div class="loading-text">Memuat jadwal...</div>
+      </div>
+    </section>
+
+    <!-- PROFIL -->
+    <section id="page-profil" class="page">
+      <div class="page-header">
+        <h1>Profil Saya</h1>
+      </div>
+      <div class="profil-layout">
+        <div class="profil-card">
+          <div class="profil-avatar" id="profil-avatar-display">?</div>
+          <h2 id="profil-nama-display">—</h2>
+          <p id="profil-jurusan-display">—</p>
+          <p id="profil-bio-display" class="profil-bio">—</p>
+          <div id="profil-matkul-display" class="matkul-tags"></div>
+        </div>
+        <div class="profil-edit">
+          <h3>Edit Profil</h3>
+          <div id="profil-success" class="alert alert-success hidden">Profil berhasil diperbarui!</div>
+          <div class="form-group"><label>Nama</label><input type="text" id="edit-nama"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Jurusan</label>
+              <select id="edit-jurusan">
+                <option value="">Pilih Jurusan</option>
+                <option>Teknik Informatika</option><option>Matematika</option>
+                <option>Akuntansi</option><option>Manajemen</option>
+                <option>Hukum</option><option>Kedokteran</option>
+                <option>Psikologi</option><option>Komunikasi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Semester</label>
+              <select id="edit-semester">
+                <option value="">Semester</option>
+                <option value="1">1</option><option value="2">2</option>
+                <option value="3">3</option><option value="4">4</option>
+                <option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8">8</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Bio</label><textarea id="edit-bio" rows="3" placeholder="Ceritakan tentang dirimu..."></textarea></div>
+          <div class="form-group">
+            <label>Mata Kuliah Favorit</label>
+            <div id="matkul-checkboxes" class="matkul-checkboxes"></div>
+          </div>
+          <button class="btn-primary" onclick="saveProfile()">Simpan Profil</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="page-admin" class="page">
+      <div class="page-header">
+        <h1>Admin Panel</h1>
+      </div>
+      <div class="admin-stats" id="admin-stats">
+        <div class="loading-text">Memuat statistik...</div>
+      </div>
+      <div class="admin-tabs">
+        <button class="tab active" onclick="switchAdminTab('users',this)">👥 Users</button>
+        <button class="tab" onclick="switchAdminTab('laporan',this)">🚨 Laporan</button>
+      </div>
+      <div id="admin-tab-users" class="tab-content active">
+        <div class="admin-search">
+          <input type="text" id="admin-search" placeholder="Cari nama atau email..." oninput="loadAdminUsers()">
+          <select id="admin-status-filter" onchange="loadAdminUsers()">
+            <option value="">Semua Status</option>
+            <option value="aktif">Aktif</option>
+            <option value="banned">Banned</option>
+          </select>
+        </div>
+        <div id="admin-users-table" class="admin-table-wrap">
+          <div class="loading-text">Memuat users...</div>
+        </div>
+      </div>
+      <div id="admin-tab-laporan" class="tab-content">
+        <div id="admin-laporan-table" class="admin-table-wrap">
+          <div class="loading-text">Memuat laporan...</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL: Kirim Permintaan -->
+<div id="modal-request" class="modal hidden">
+  <div class="modal-box">
+    <h3>Kirim Ajakan Belajar</h3>
+    <p id="modal-request-to"></p>
+    <div class="form-group">
+      <label>Pesan (opsional)</label>
+      <textarea id="modal-pesan" rows="3" placeholder="Halo! Ayo belajar bareng..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-request')">Batal</button>
+      <button class="btn-primary" onclick="submitRequest()">Kirim</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Tambah Jadwal -->
+<div id="modal-jadwal" class="modal hidden">
+  <div class="modal-box">
+    <h3>Buat Jadwal Belajar</h3>
+    <div class="form-group"><label>Judul</label><input type="text" id="jdl-judul" placeholder="Belajar Algoritma"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Tanggal</label><input type="date" id="jdl-tanggal"></div>
+      <div class="form-group"><label>Jam Mulai</label><input type="time" id="jdl-mulai"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Jam Selesai</label><input type="time" id="jdl-selesai"></div>
+      <div class="form-group"><label>Lokasi</label><input type="text" id="jdl-lokasi" placeholder="Online / Perpustakaan"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-jadwal')">Batal</button>
+      <button class="btn-primary" onclick="submitJadwal()">Buat Jadwal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Laporan -->
+<div id="modal-lapor" class="modal hidden">
+  <div class="modal-box">
+    <h3>Laporkan Pengguna</h3>
+    <p id="modal-lapor-to"></p>
+    <div class="form-group">
+      <label>Alasan Laporan</label>
+      <textarea id="modal-alasan" rows="3" placeholder="Jelaskan alasan laporan..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-lapor')">Batal</button>
+      <button class="btn-danger" onclick="submitLaporan()">Kirim Laporan</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
